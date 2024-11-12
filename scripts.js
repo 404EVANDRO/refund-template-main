@@ -35,7 +35,7 @@ function formatCurrencyBRL(value) {
 form.onsubmit = (event) => {
     event.preventDefault()
 
-    //Creates a new object with the details of new expenditure
+    //Creates a new object with the details of new expense
     const newExpense = {
         id: new Date().getTime(),
         expense: expense.value,
@@ -44,29 +44,81 @@ form.onsubmit = (event) => {
         amount: amount.value, 
         created_at: new Date()
     }
-    console.log(newExpense)
+    expenseAdd(newExpense)
 }
+
 //call the function for add the item on list
 function expenseAdd(newExpense){
-    try{
+    try {
         //Creates the element li to add on list
         const expenseItem = document.createElement("li")
         expenseItem.classList.add("expense")
 
         //Creates the category icon
         const expenseIcon = document.createElement("img")
-        expenseIcon = SetAttributte("src", `img/${newExpense.category_id}.svg`)
-        expenseIcon = SetAttributte("alt", newExpense.category_name)
+        expenseIcon.setAttribute("src", `img/${newExpense.category_id}.svg`)
+        expenseIcon.setAttribute("alt", newExpense.category_name)
 
-        expenseItem.append(expenseIcon)
+
+        //create info for expese
+        const expenseInfo = document.createElement("div")
+        expenseInfo.classList.add("expense-info")
+
+        //create name of expense
+        const expenseName = document.createElement("strong")
+        expenseName.textContent = newExpense.expense
+        
+        //create category for expense
+        const expenseCategory = document.createElement("span")
+        expenseCategory.textContent = newExpense.category_name
+
+        //add name and category in div to informations of expense
+        expenseInfo.append(expenseName, expenseCategory)
+
+         //add the value of expanse
+         const expenseAmount = document.createElement("span")
+         expenseAmount.classList.add("expense-amount")
+         expenseAmount.innerHTML = `<small>R$</small>${newExpense.amount
+             .toUpperCase()
+             .replace ("R$", "")}`
+
+
+        //create remove icon 
+        const removeIcon = document.createElement("img")
+        removeIcon.classList.add("remove-icon")
+        removeIcon.setAttribute("src", "img/remove.svg")
+        removeIcon.setAttribute("alt", "remover")
+        
+
+        //add the information on item 
+        expenseItem.append(expenseIcon, expenseInfo, expenseAmount, removeIcon)
+
+
+        //add the item on list
         expenseList.append(expenseItem)
 
+        //att the totals
+        updateTotals
+        
     } catch (error) {
         alert("Não foi possível atualizar a lista de despesas.")
         console.log(error)
     }
-    
 }
+
+//atualiza os totais
+function updateTotals(){
+    try{
+        //recovery li from the list (ul)
+        const items = expenseList.children
+        console.log(items)
+
+    } catch (error) {
+        console.log(error)
+        alert("Não foi possível atualizar os totais.")
+    }
+}
+
 
 
 
